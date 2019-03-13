@@ -29,6 +29,7 @@
         if(title!=undefined && !isWeak(title)) {
             window.close();
         }
+        observer.disconnect();
     };
     var mutationConfig = { attributes: true, childList: true, subtree: true };
     var observer = new MutationObserver(callback);
