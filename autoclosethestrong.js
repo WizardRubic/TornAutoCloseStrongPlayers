@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         AutoCloseTheStrong
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  automatically closes torn profile pages if target is not a punchbag
 // @author       WizardRubic
 // @match        *.torn.com/profiles.php*
@@ -12,14 +12,20 @@
 (function() {
     'use strict';
     var isWeak = function(title) {
-        // if hospital or travelling then return false as they're not attackable
-        return title=="Punchbag";
+        // returns true if the targets is any of the following titles
+        return title=="Punchbag" || title=="Healer" || title=="Loser";
     };
     var profileElement = (document.getElementsByClassName("content-wrapper")[0]);
     var callback = function(mutationsList) {
-        console.log();
-        // var title = document.getElementsByClassName("main-desc")[0].innerHTML;
-        var title = document.getElementsByClassName("medium")[1].innerText;
+        var rankTitleElement = document.getElementsByClassName("two-row");
+        if(rankTitleElement==undefined) {
+            return;
+        }
+        var rankTitleArray = rankTitleElement[0];
+        if(rankTitleArray == undefined) {
+            return;
+        }
+        var title = rankTitleArray.children[1].innerText;
         if(title!=undefined && !isWeak(title)) {
             window.close();
         }
